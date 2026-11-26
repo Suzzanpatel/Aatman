@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+
+    env:
+      APP_ENV: development
+      DB_HOST: 127.0.0.1
+      DB_PORT: "3306"
+      DB_NAME: aatman
+      DB_USER: aatman_app
+      DB_PASS: change-me-to-a-strong-password
+      AATMAN_MYSQL: mysql -h 127.0.0.1 -u root -proot aatman
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mysqli, curl, mbstring
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Lint PHP
+        run: |
+          find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l | grep -v 'No syntax errors' || true
+          ! find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l 2>&1 | grep -q 'Parse error'
+
+      - name: Check for committed secrets
+        run: |
+          ! grep -rEn 'AIza[0-9A-Za-z_-]{35}' --exclude-dir=.git .
+
+      - name: Create database
+        run: |
+          sed "s/'aatman_app'@'localhost'/'aatman_app'@'%'/g" database/create_database.sql | mysql -h 127.0.0.1 -u root -proot
+          mysql -h 127.0.0.1 -u root -proot aatman < database/schema.sql
+          mysql -h 127.0.0.1 -u root -proot aatman < database/seed.sql
+
+      - name: Start app
+        run: |
+          php -S 127.0.0.1:8080 -t public > /tmp/php.log 2>&1 &
+          sleep 2
+
+      - name: End-to-end tests
+        run: |
+          pip install requests
+          python3 tests/e2e_smoke.py
+
+      - name: Server log (on failure)
+        if: failure()
+        run: cat /tmp/php.log

@@ -1,0 +1,34 @@
+name: Bug report
+description: Something isn't working
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "⚠️ For **security** issues, use Security → Report a vulnerability instead of a public issue."
+  - type: dropdown
+    id: role
+    attributes:
+      label: Which role were you using?
+      options: [Person in need, NGO, Donor, Volunteer, Admin, Not logged in]
+    validations: { required: true }
+  - type: input
+    id: page
+    attributes:
+      label: Page / URL
+      placeholder: dashboard/ngo.php#completed-drives
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: "1. \n2. \n3. "
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual behaviour
+    validations: { required: true }
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: "PHP 8.2, MariaDB 10.11, XAMPP on Windows, Chrome"
