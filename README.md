@@ -1,5 +1,10 @@
 # Aatman: The Soul of Giving
 
+[![CI](https://github.com/Suzzanpatel/Aatman/actions/workflows/ci.yml/badge.svg)](https://github.com/Suzzanpatel/Aatman/actions/workflows/ci.yml)
+![PHP](https://img.shields.io/badge/PHP-8.1%2B-777BB4?logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL%20%2F%20MariaDB-InnoDB-4479A1?logo=mysql&logoColor=white)
+![Gemini](https://img.shields.io/badge/AI-Google%20Gemini-8E75B2?logo=googlegemini&logoColor=white)
+
 **Aatman** is a multi-role social-impact management platform. It connects **people in need**, **donors**, **NGOs** and **volunteers**, with an **administrator** overseeing the whole platform. It also includes an **AI assistant** (Google Gemini) to guide users, and a **language selector** on every page so anyone can use it in their own language.
 
 > Built with PHP 8, MySQL/MariaDB, HTML/CSS and vanilla JavaScript. No framework and no Composer dependencies.
@@ -15,6 +20,14 @@
 | **Relational database design** | A normalised schema: one `users` table plus 1:1 role-profile tables (shared-PK foreign keys), `ON DELETE CASCADE`, ENUM domains, CHECK constraints, composite indexes, and a data-preserving migration |
 | **Role-based access control** | 5 roles, per-request role checks against the DB, ownership-scoped writes (no IDOR), admin-only user management, and admins can't be created through sign-up |
 | **Security** | CSRF tokens, hardened sessions, login throttling, bcrypt with rehash, output escaping, secrets in `.env`, least-privilege DB user, and security headers. See [docs/SECURITY.md](docs/SECURITY.md) |
+
+## Screenshots
+
+| Landing page + AI assistant | Admin overview |
+|---|---|
+| ![Landing page](docs/images/landing.png) | ![Admin overview](docs/images/admin-overview.png) |
+| **NGO: campaign management** | **Person in need: my requests** |
+| ![NGO campaigns](docs/images/ngo-campaigns.png) | ![Needy requests](docs/images/needy-requests.png) |
 
 ## Features by role
 
@@ -95,7 +108,9 @@ Aatman/
 │   └── migrations/          upgrade path from the old Aatman_final.sql dump
 ├── scripts/create_admin.php CLI to create or promote an admin
 ├── tests/e2e_smoke.py       end-to-end functional + security tests
-├── docs/                    architecture, database, security, setup, changelog
+├── docs/                    user guide, setup, architecture, database, security, changelog, screenshots
+├── .github/                 CI workflow, issue & PR templates
+├── CONTRIBUTING.md · SECURITY.md
 └── .env.example             configuration template (copy to .env)
 ```
 
@@ -103,11 +118,15 @@ Aatman/
 
 | Document | Contents |
 |---|---|
+| [docs/USER_GUIDE.md](docs/USER_GUIDE.md) | What each role can do, step by step |
 | [docs/SETUP.md](docs/SETUP.md) | Installation (built-in server, XAMPP, Apache), configuration, upgrading an old database, troubleshooting |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Request lifecycle, layers, RBAC matrix, page and endpoint map |
 | [docs/DATABASE.md](docs/DATABASE.md) | ER diagram, table reference, design decisions |
 | [docs/SECURITY.md](docs/SECURITY.md) | Security controls and the vulnerabilities that were fixed |
 | [docs/CHANGELOG.md](docs/CHANGELOG.md) | Every bug and security issue fixed in the overhaul |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Dev workflow and coding conventions |
+
+Each top-level folder also has its own `README.md` explaining its files.
 
 ## Testing
 
@@ -117,7 +136,7 @@ php -S 127.0.0.1:8080 -t public &
 pip install requests && python3 tests/e2e_smoke.py
 ```
 
-The suite runs 60+ checks. It covers every role's login and dashboard, profile updates, request and campaign flows, and the attacks that used to work: admin bypass, `role=admin` sign-up, IDOR, missing CSRF, stored XSS, unauthenticated campaign edits, brute force, and sessions that stayed alive after deactivation.
+The same suite runs on every push and pull request through **GitHub Actions** (`.github/workflows/ci.yml`), together with a PHP lint and a scan for committed API keys. It runs 60+ checks. It covers every role's login and dashboard, profile updates, request and campaign flows, and the attacks that used to work: admin bypass, `role=admin` sign-up, IDOR, missing CSRF, stored XSS, unauthenticated campaign edits, brute force, and sessions that stayed alive after deactivation.
 
 ## Tech stack
 

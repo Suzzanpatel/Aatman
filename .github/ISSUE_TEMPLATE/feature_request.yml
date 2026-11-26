@@ -1,0 +1,23 @@
+name: Feature request
+description: Suggest an idea for Aatman
+labels: [enhancement]
+body:
+  - type: checkboxes
+    id: roles
+    attributes:
+      label: Who would benefit?
+      options:
+        - label: People in need
+        - label: NGOs
+        - label: Donors
+        - label: Volunteers
+        - label: Admins
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+    validations: { required: true }
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution

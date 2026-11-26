@@ -38,6 +38,9 @@ All 20 issues are described in [SECURITY.md](SECURITY.md#vulnerabilities-fixed).
 - Chat assistant on dashboards (not only the landing page), aware of the user's role and replying in the user's language
 - Flash messages after every action; Cancel button when editing a profile; status badges
 - `tests/e2e_smoke.py` with 60+ functional and security checks
+- GitHub Actions CI (PHP lint, secret scan, end-to-end tests on MariaDB)
+- GitHub community files: `CONTRIBUTING.md`, `SECURITY.md`, issue forms, pull-request template
+- A `README.md` in every top-level folder, `docs/USER_GUIDE.md`, and screenshots in `docs/images/`
 
 ### Restructured
 
