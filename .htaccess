@@ -1,0 +1,16 @@
+# Used only when the web server's document root is the repository root
+# (e.g. XAMPP: htdocs/Aatman). The recommended setup points the document root
+# at public/ instead, in which case this file is never read.
+
+Options -Indexes
+
+# Never serve secrets, source-only folders or SQL files.
+<FilesMatch "^\.(env|git)|\.(sql|md|log)$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(includes|database|docs|scripts)(/|$) - [F,L]
+    RewriteRule ^$ public/ [L,R=302]
+</IfModule>

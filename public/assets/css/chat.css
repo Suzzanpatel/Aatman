@@ -1,0 +1,136 @@
+/* Aatman AI assistant widget (shared by landing page and dashboards) */
+:root { --color-primary:#3d5a49; --color-secondary:#7e8c5d; --color-accent:#e5b871; --color-text:#2f2f2f; --color-light:#f4f4f2; }
+.aatman-chat-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  font-family: "Poppins", sans-serif;
+}
+
+.chat-toggle {
+  background-color: var(--color-primary);
+  color: var(--color-light);
+  border: none;
+  border-radius: 25px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+}
+
+.chat-toggle:hover {
+  background-color: var(--color-secondary);
+}
+
+.chat-container {
+  width: 340px;
+  background-color: var(--color-light);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+.chat-container.hidden {
+  display: none;
+}
+
+.chat-header {
+  background-color: var(--color-primary);
+  color: var(--color-light);
+  padding: 12px 16px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-close {
+  background: none;
+  border: none;
+  color: var(--color-light);
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.chat-close:hover {
+  color: var(--color-accent);
+}
+
+.chat-box {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #ffffff;
+  max-height: 400px;
+}
+
+.message {
+  padding: 10px 14px;
+  border-radius: 12px;
+  line-height: 1.4;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.user-message {
+  background-color: var(--color-accent);
+  align-self: flex-end;
+  color: var(--color-text);
+}
+
+.bot-message {
+  background-color: var(--color-secondary);
+  color: var(--color-light);
+  align-self: flex-start;
+}
+
+.chat-form {
+  display: flex;
+  border-top: 1px solid #ddd;
+  padding: 8px;
+  background-color: var(--color-light);
+}
+
+#chat-input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.send-btn {
+  background-color: var(--color-primary);
+  color: var(--color-light);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.send-btn:hover {
+  background-color: var(--color-secondary);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
